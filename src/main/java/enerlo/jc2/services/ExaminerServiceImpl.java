@@ -4,6 +4,7 @@ import enerlo.jc2.Question;
 import enerlo.jc2.exceptions.TooManyCallsException;
 import enerlo.jc2.interfaces.ExaminerService;
 import enerlo.jc2.interfaces.QuestionService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -14,39 +15,39 @@ import java.util.Set;
 @Service
 public class ExaminerServiceImpl implements ExaminerService
 {
+    private QuestionService javaQuestionService;
+    private QuestionService mathQuestionService;
     private Random random;
-    private QuestionService questionService;
 
-
-    public ExaminerServiceImpl(QuestionService questionService) {
-        this.random = new Random();
-        this.questionService = questionService;
-    }
-
-    public ExaminerServiceImpl()
+    public ExaminerServiceImpl(@Qualifier("java") QuestionService javaQuestionService,@Qualifier("math") QuestionService mathQuestionService)
     {
-        this.random = new Random();
-        this.questionService = null;
+        this.javaQuestionService = javaQuestionService;
+        this.mathQuestionService = mathQuestionService;
+        random = new Random();
     }
     @Override
     public Collection<Question> getQuestions(int amount)
     {
-        int count = 0;
+        int size = javaQuestionService.getAllQuestions().size() + mathQuestionService.getAllQuestions().size();
         Set<Question> questions = new HashSet<>();
-        for(int i = 0; i < amount;)
+        Question question;
+
+        if(amount > size)
+            throw new TooManyCallsException("Превышен лимит вызова метода");
+
+        while(amount > 0)
         {
-            if(count > questions.size())
-                throw new TooManyCallsException("Превышен лимит вызова метода");
+            if(random.nextBoolean())
+                question = javaQuestionService.getRandomQuestion();
+            else
+                question = mathQuestionService.getRandomQuestion();
 
-            Question question = questionService.getRandomQuestion();
-
-            if(!questions.contains(question))
-            {
+            if(!questions.contains(question)) {
                 questions.add(question);
-                i++;
+                amount--;
             }
-            count++;
         }
+
         return questions;
     }
 }

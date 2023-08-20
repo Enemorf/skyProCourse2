@@ -1,30 +1,30 @@
 package enerlo.jc2.services;
 
 import enerlo.jc2.Question;
-import enerlo.jc2.interfaces.QuestionService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static enerlo.jc2.services.ConstantsTest.QUESTION_1;
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import static enerlo.jc2.services.ConstantsTest.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
 
-import static enerlo.jc2.services.ConstantsTest.QUESTIONS;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ExaminerServiceImplTest
 {
     @Mock
-    private JavaQuestionService questionServiceMock;
+    private JavaQuestionService javaServiceMock;
+    @Mock
+    private MathQuestionService mathQuestionServiceMock;
     @InjectMocks
     private ExaminerServiceImpl out;
 
@@ -32,11 +32,15 @@ public class ExaminerServiceImplTest
     @Test
     public void getQuestionsTest()
     {
-        when(questionServiceMock.getRandomQuestion()).thenReturn(QUESTION_1);
+        when(javaServiceMock.getRandomQuestion()).thenReturn(QUESTION_1);
+        when(mathQuestionServiceMock.getRandomQuestion()).thenReturn(QUESTION_2);
 
-        assertDoesNotThrow(()-> out.getQuestions(1));
+        doReturn(1).when(javaServiceMock).getAllQuestions().size();
+        doReturn(1).when(mathQuestionServiceMock).getAllQuestions().size();
 
-        assertEquals(QUESTION_1, out.getQuestions(1).toArray()[0]);
+        Question[] actQuest = new Question[] {QUESTION_1, QUESTION_2};
+
+        assertEquals(actQuest, out.getQuestions(2).toArray());
     }
 
 

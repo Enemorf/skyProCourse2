@@ -2,7 +2,6 @@ package enerlo.jc2.controllers;
 
 import enerlo.jc2.Question;
 import enerlo.jc2.interfaces.QuestionService;
-import enerlo.jc2.services.JavaQuestionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/java")
-public class JavaQuestionController
+@RequestMapping("/math")
+public class MathQuestionController
 {
     private final QuestionService javaQuestionService;
 
-    public JavaQuestionController (@Qualifier("java") QuestionService javaQuestionService)
+    public MathQuestionController (@Qualifier("math") QuestionService javaQuestionService)
     {
         this.javaQuestionService = javaQuestionService;
     }
@@ -38,5 +37,6 @@ public class JavaQuestionController
     public Collection<Question> getAll() {
         return javaQuestionService.getAllQuestions();
     }
+
 
 }

@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Service("java")
-public class JavaQuestionService implements QuestionService
+@Service("math")
+public class MathQuestionService implements QuestionService
 {
     private final QuestionRepository questionRepository;
     private Random random;
 
-    public JavaQuestionService(@Qualifier("javaRep") QuestionRepository questionRepository)
+    public MathQuestionService(@Qualifier("mathRep") QuestionRepository questionRepository)
     {
         this.questionRepository = questionRepository;
     }

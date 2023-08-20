@@ -1,7 +1,7 @@
 package enerlo.jc2.services;
 
 import enerlo.jc2.Question;
-import enerlo.jc2.repository.JavaQuestionRepository;
+import enerlo.jc2.repository.MathQuestionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,17 +16,17 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static enerlo.jc2.services.ConstantsTest.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-public class JavaQuestionServiceTest
+public class MathQuestionServiceTest
 {
     private final Set<Question> questions = new HashSet<>();
     @Mock
-    private JavaQuestionRepository javaQuestionRepository;
+    private MathQuestionRepository mathQuestionRepository;
 
     @InjectMocks
     private JavaQuestionService out;
@@ -56,7 +56,7 @@ public class JavaQuestionServiceTest
     {
         Question quest = new Question(question, answer);
 
-        when(javaQuestionRepository.add(any())).thenReturn(quest);
+        when(mathQuestionRepository.add(any())).thenReturn(quest);
         assertEquals(out.addQuestion(question, answer), quest);
     }
 
@@ -64,7 +64,7 @@ public class JavaQuestionServiceTest
     @MethodSource("PARAMS_FOR_ADD_QUEST")
     public void addQuestionsTest(Question question)
     {
-        when(javaQuestionRepository.add(any())).thenReturn(question);
+        when(mathQuestionRepository.add(any())).thenReturn(question);
         assertEquals(out.addQuestion(question),question);
     }
 
@@ -72,26 +72,14 @@ public class JavaQuestionServiceTest
     @MethodSource("PARAMS_FOR_ADD_QUEST")
     public void removeQuestionTest(Question question)
     {
-        when(javaQuestionRepository.remove(any())).thenReturn(question);
+        when(mathQuestionRepository.remove(any())).thenReturn(question);
         assertEquals(out.removeQuestion(question),question);
     }
 
     @Test
     public void getAllQuestionsTest()
     {
-        when(javaQuestionRepository.getAll()).thenReturn(QUESTIONS);
+        when(mathQuestionRepository.getAll()).thenReturn(QUESTIONS);
         assertEquals(out.getAllQuestions(),QUESTIONS);
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }

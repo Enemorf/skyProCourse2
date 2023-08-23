@@ -7,10 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 
 import static enerlo.jc2.services.ConstantsTest.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -35,12 +38,12 @@ public class ExaminerServiceImplTest
         when(javaServiceMock.getRandomQuestion()).thenReturn(QUESTION_1);
         when(mathQuestionServiceMock.getRandomQuestion()).thenReturn(QUESTION_2);
 
-        doReturn(1).when(javaServiceMock).getAllQuestions().size();
-        doReturn(1).when(mathQuestionServiceMock).getAllQuestions().size();
+        when(javaServiceMock.getAllQuestions()).thenReturn(new HashSet<>(Arrays.asList(QUESTION_1)));
+        when(mathQuestionServiceMock.getAllQuestions()).thenReturn(new HashSet<>(Arrays.asList(QUESTION_2)));
 
-        Question[] actQuest = new Question[] {QUESTION_1, QUESTION_2};
+        Collection<Question> questions = out.getQuestions(2);
 
-        assertEquals(actQuest, out.getQuestions(2).toArray());
+        assertEquals(2, questions.size());
     }
 
 

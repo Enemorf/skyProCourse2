@@ -13,41 +13,45 @@ import java.util.Random;
 import java.util.Set;
 
 @Service
-public class ExaminerServiceImpl implements ExaminerService
-{
+public class ExaminerServiceImpl implements ExaminerService {
     private QuestionService javaQuestionService;
     private QuestionService mathQuestionService;
     private Random random;
 
-    public ExaminerServiceImpl(@Qualifier("java") QuestionService javaQuestionService,@Qualifier("math") QuestionService mathQuestionService)
-    {
+    public ExaminerServiceImpl(@Qualifier("java") QuestionService javaQuestionService, @Qualifier("math") QuestionService mathQuestionService) {
         this.javaQuestionService = javaQuestionService;
         this.mathQuestionService = mathQuestionService;
         random = new Random();
     }
+
     @Override
-    public Collection<Question> getQuestions(int amount)
-    {
-        int size = javaQuestionService.getAllQuestions().size() + mathQuestionService.getAllQuestions().size();
+    public Collection<Question> getQuestions(int amount) {
         Set<Question> questions = new HashSet<>();
         Question question;
 
+        int size = javaQuestionService.getAllQuestions().size() + mathQuestionService.getAllQuestions().size();
         if(amount > size)
-            throw new TooManyCallsException("Превышен лимит вызова метода");
-
-        while(amount > 0)
         {
-            if(random.nextBoolean())
-                question = javaQuestionService.getRandomQuestion();
-            else
-                question = mathQuestionService.getRandomQuestion();
+            throw new TooManyCallsException();
+        }
 
-            if(!questions.contains(question)) {
+        while (amount > 0)
+        {
+            if (random.nextBoolean())
+            {
+                question = javaQuestionService.getRandomQuestion();
+            }
+            else
+            {
+                question = mathQuestionService.getRandomQuestion();
+            }
+
+            if (!questions.contains(question))
+            {
                 questions.add(question);
                 amount--;
             }
         }
-
         return questions;
     }
 }

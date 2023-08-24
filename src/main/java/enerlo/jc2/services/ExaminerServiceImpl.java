@@ -7,10 +7,8 @@ import enerlo.jc2.interfaces.QuestionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.ArrayList;
 
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
@@ -27,27 +25,25 @@ public class ExaminerServiceImpl implements ExaminerService {
     @Override
     public Collection<Question> getQuestions(int amount) {
         Set<Question> questions = new HashSet<>();
+        List<QuestionService> services = new ArrayList<>();
+            services.add(javaQuestionService);
+            services.add(mathQuestionService);
         Question question;
 
-        int size = javaQuestionService.getAllQuestions().size() + mathQuestionService.getAllQuestions().size();
-        if(amount > size)
-        {
-            throw new TooManyCallsException();
-        }
+//Не проверяется, ибо мы всегда можем дополнить рандомными математическими вопросами
+//        int size = services.get(0).getAllQuestions().size() + random.nextInt(0,amount+1);
+//        if(amount > size) {
+//            throw new TooManyCallsException();
+//        }
 
-        while (amount > 0)
-        {
-            if (random.nextBoolean())
-            {
-                question = javaQuestionService.getRandomQuestion();
+        while (amount > 0) {
+            if (random.nextBoolean()) {
+                question = services.get(0).getRandomQuestion();
             }
-            else
-            {
-                question = mathQuestionService.getRandomQuestion();
+            else {
+                question = services.get(1).getRandomQuestion();
             }
-
-            if (!questions.contains(question))
-            {
+            if (!questions.contains(question)) {
                 questions.add(question);
                 amount--;
             }

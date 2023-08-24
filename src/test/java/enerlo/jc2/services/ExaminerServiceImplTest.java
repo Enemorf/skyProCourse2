@@ -38,9 +38,6 @@ public class ExaminerServiceImplTest
         when(javaServiceMock.getRandomQuestion()).thenReturn(QUESTION_1);
         when(mathQuestionServiceMock.getRandomQuestion()).thenReturn(QUESTION_2);
 
-        when(javaServiceMock.getAllQuestions()).thenReturn(new HashSet<>(Arrays.asList(QUESTION_1)));
-        when(mathQuestionServiceMock.getAllQuestions()).thenReturn(new HashSet<>(Arrays.asList(QUESTION_2)));
-
         Collection<Question> questions = out.getQuestions(2);
 
         assertEquals(2, questions.size());

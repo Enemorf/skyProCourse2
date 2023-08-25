@@ -16,7 +16,6 @@ public class MathQuestionService implements QuestionService
 
     public MathQuestionService()
     {
-        throw new MethodNotAllowedException();
     }
 
     @Override

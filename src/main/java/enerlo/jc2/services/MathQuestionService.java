@@ -58,19 +58,20 @@ public class MathQuestionService implements QuestionService
 
         switch (random.nextInt(4)) {
             case 0 -> {
-                return new Question("Сколько будет " + a + " + " + b + "?", "" + (a + b));
+                    return new Question("Сколько будет " + a + (b >=0 ? " + ": " - ") + b + " ?",
+                            Integer.toString(a + b));
             }
             case 1 -> {
-                return new Question("Сколько будет " + a + " - " + b + "?", "" + (a - b));
+                return new Question("Сколько будет " + a + (b >=0 ? " - ": " + ") + b + " ?",
+                            Integer.toString(a - b));
             }
             case 2 -> {
-                return new Question("Сколько будет " + a + " * " + b + "?", "" + (a * b));
+                return new Question("Сколько будет " + a + " * " + b + " ?",
+                            Integer.toString(a * b));
             }
             case 3 -> {
-                if (b == 0) {
-                    b = 1;
-                }
-                return new Question("Сколько будет " + a + " / " + b + "?", "" + (a / b));
+                return new Question("Сколько будет " + a + " / " + (b == 0 ? b = 1 : b) + " ?",
+                            Double.toString((double)a / b));
             }
         }
         return null;
